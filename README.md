@@ -103,3 +103,6 @@ Verificación
         http://discovery.sistema.sol/basic/desarrollo
         http://discovery.sistema.sol/basic/ventas
         http://discovery.sistema.sol/digest
+Remember to change in your resolv.conf the namerserver.
+sudo nano /etc/resolv.conf
+and write: namerserver 192.168.56.100
