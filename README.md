@@ -135,6 +135,8 @@ Verificación
         http://discovery.sistema.sol/basic/desarrollo
         http://discovery.sistema.sol/basic/ventas
         http://discovery.sistema.sol/digest
-Remember to change in your resolv.conf the namerserver.
-sudo nano /etc/resolv.conf
-and write: namerserver 192.168.56.100
+
+Recuerda cambiar en tu ordenador el resolv.conf:
+    sudo nano /etc/resolv.conf
+Escribe ahí la ip del dns:
+    192.168.56.100
