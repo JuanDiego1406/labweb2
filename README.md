@@ -137,6 +137,9 @@ Verificación
         http://discovery.sistema.sol/digest
 
 Recuerda cambiar en tu ordenador el resolv.conf:
+
     sudo nano /etc/resolv.conf
+
 Escribe ahí la ip del dns:
+
     192.168.56.100
