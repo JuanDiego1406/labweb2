@@ -40,32 +40,64 @@ Contenido:
 
 <VirtualHost *:80>
     ServerName discovery.sistema.sol
+    ServerAdmin webmaster@apolo.sistema.sol
+
     DocumentRoot /var/www/discovery.sistema.sol
 
+    # Configuración de logs
+    ErrorLog ${APACHE_LOG_DIR}/discovery_error.log
+    CustomLog ${APACHE_LOG_DIR}/discovery_access.log combined
+
+    # Configuración del directorio principal
+    <Directory /var/www/discovery.sistema.sol>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    # Configuración del directorio basic
     <Directory /var/www/discovery.sistema.sol/basic>
         AuthType Basic
-        AuthName "Basic Auth"
-        AuthUserFile "/etc/apache2/.htpasswd_basic"
+        AuthName "Restricted Area"
+        AuthUserFile /etc/apache2/.htpasswd_basic
         Require valid-user
+        Options Indexes FollowSymLinks
+        AllowOverride None
     </Directory>
 
+    # Configuración del subdirectorio desarrollo
     <Directory /var/www/discovery.sistema.sol/basic/desarrollo>
+        AuthType Basic
+        AuthName "Restricted Area - Desarrollo"
+        AuthUserFile /etc/apache2/.htpasswd_basic
+        AuthGroupFile /etc/apache2/.htgroups
         Require group desarrollo
-        AuthGroupFile "/etc/apache2/.htgroups"
+        Options Indexes FollowSymLinks
+        AllowOverride None
     </Directory>
 
+    # Configuración del subdirectorio ventas
     <Directory /var/www/discovery.sistema.sol/basic/ventas>
+        AuthType Basic
+        AuthName "Restricted Area - Ventas"
+        AuthUserFile /etc/apache2/.htpasswd_basic
+        AuthGroupFile /etc/apache2/.htgroups
         Require group ventas
-        AuthGroupFile "/etc/apache2/.htgroups"
+        Options Indexes FollowSymLinks
+        AllowOverride None
     </Directory>
 
+    # Configuración del directorio digest
     <Directory /var/www/discovery.sistema.sol/digest>
         AuthType Digest
         AuthName "astronauts"
-        AuthUserFile "/etc/apache2/.htpasswd_digest"
+        AuthUserFile /etc/apache2/.htpasswd_digest
         Require user commander
+        Options Indexes FollowSymLinks
+        AllowOverride None
     </Directory>
 </VirtualHost>
+
 
 Activa el sitio y reinicia Apache:
 
