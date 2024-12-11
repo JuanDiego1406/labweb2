@@ -106,7 +106,7 @@ Activa el sitio y reinicia Apache:
 
 Configuración de autenticación HTTP Basic
 
-    Crea el archivo de contraseñas:
+Crea el archivo de contraseñas:
 
 sudo htpasswd -c /etc/apache2/.htpasswd_basic arturo
 sudo htpasswd /etc/apache2/.htpasswd_basic ana
@@ -119,9 +119,9 @@ Crea el archivo de grupos:
 
 Configuración de autenticación HTTP Digest
 
-    Habilita el módulo Digest:
+Habilita el módulo Digest:
 
-sudo a2enmod auth_digest
+    sudo a2enmod auth_digest
 
 Crea el archivo de contraseñas Digest:
 
