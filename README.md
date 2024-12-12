@@ -143,3 +143,10 @@ Recuerda cambiar en tu ordenador el resolv.conf:
 Escribe ahí la ip del dns:
 
     192.168.56.100
+
+Si quieres activar el https con certificado autofirmado sigue los siguientes pasos.
+
+Crea el certificado y la clave:
+    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/ssl/private/discovery-sol.key \
+    -out /etc/ssl/certs/discovery-sol.crt
