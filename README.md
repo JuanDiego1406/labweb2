@@ -39,6 +39,7 @@ sudo nano /etc/apache2/sites-available/discovery.sistema.sol.conf
 Contenido:
 
 <VirtualHost *:80>
+
     ServerName discovery.sistema.sol
     ServerAdmin webmaster@apolo.sistema.sol
 
@@ -155,6 +156,7 @@ Crea el certificado y la clave:
 crearemos el documento discovery.ssl.conf:
 
 <VirtualHost *:443>
+
     ServerName discovery.sistema.sol
     ServerAdmin webmaster@apolo.sistema.sol
 
