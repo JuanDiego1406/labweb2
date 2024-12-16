@@ -144,10 +144,116 @@ Escribe ahí la ip del dns:
 
     192.168.56.100
 
-Si quieres activar el https con certificado autofirmado sigue los siguientes pasos.
+## Si quieres activar el https con certificado autofirmado sigue los siguientes pasos.
 
 Crea el certificado y la clave:
 
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/ssl/private/discovery-sol.key \
     -out /etc/ssl/certs/discovery-sol.crt
+
+crearemos el documento discovery.ssl.conf:
+
+<VirtualHost *:443>
+    ServerName discovery.sistema.sol
+    ServerAdmin webmaster@apolo.sistema.sol
+
+    DocumentRoot /var/www/discovery.sistema.sol
+    # Configuración SSL
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/discovery-sol.crt
+    SSLCertificateKeyFile /etc/ssl/private/discovery-sol.key
+    
+    # Configuración de logs
+    ErrorLog ${APACHE_LOG_DIR}/discovery_error.log
+    CustomLog ${APACHE_LOG_DIR}/discovery_access.log combined
+
+    # Configuración del directorio principal
+    <Directory /var/www/discovery.sistema.sol>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    # Configuración del directorio basic
+    <Directory /var/www/discovery.sistema.sol/basic>
+        AuthType Basic
+        AuthName "Restricted Area"
+        AuthUserFile /etc/apache2/.htpasswd_basic
+        Require valid-user
+        Options Indexes FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    # Configuración del subdirectorio desarrollo
+    <Directory /var/www/discovery.sistema.sol/basic/desarrollo>
+        AuthType Basic
+        AuthName "Restricted Area - Desarrollo"
+        AuthUserFile /etc/apache2/.htpasswd_basic
+        AuthGroupFile /etc/apache2/.htgroups
+        Require group desarrollo
+        Options Indexes FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    # Configuración del subdirectorio ventas
+    <Directory /var/www/discovery.sistema.sol/basic/ventas>
+        AuthType Basic
+        AuthName "Restricted Area - Ventas"
+        AuthUserFile /etc/apache2/.htpasswd_basic
+        AuthGroupFile /etc/apache2/.htgroups
+        Require group ventas
+        Options Indexes FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    # Configuración del directorio digest
+    <Directory /var/www/discovery.sistema.sol/digest>
+        AuthType Digest
+        AuthName "astronauts"
+        AuthUserFile /etc/apache2/.htpasswd_digest
+        Require user commander
+        Options Indexes FollowSymLinks
+        AllowOverride None
+    </Directory>
+</VirtualHost>
+
+y luego copiaremos el certificado y la clave en nuestro equipo 
+
+    cd /etc/ssl/certs
+
+    cp discovery-sol.crt /vagrant/ssl
+
+    sudo su
+
+    cd /etc/ssl/private
+
+    cp discovery-sol.key /vagrant/ssl
+
+
+en el vagrant file copiaremos el certificado y la clave en el de nuevo en la máquina tierra, y añadiremos las siguientes lineas.
+
+    # Copiando los certificados y clave
+    cp -v /vagrant/ssl/discovery-sol.crt /etc/ssl/certs
+    sudo cp -v /vagrant/ssl/discovery-sol.key /etc/ssl/private
+
+    # TODO: Configurar sitio virtual
+    cp -v /vagrant/config/tierra/discovery.ssl.conf /etc/apache2/sites-available
+
+    # Habilitar/deshabilitar sitios virtuales      
+    sudo a2ensite discovery.ssl.conf
+
+    # Habilitar módulos necesarios
+    sudo a2enmod ssl
+
+reiniciamos lás máquinas con:
+
+    vagrant destroy -f && vagrant up
+
+y al entrar a una de las siguientes páginas se vería el https encima:
+
+        https://discovery.sistema.sol/
+        https://discovery.sistema.sol/basic
+        https://discovery.sistema.sol/basic/desarrollo
+        https://discovery.sistema.sol/basic/ventas
+        https://discovery.sistema.sol/digest
