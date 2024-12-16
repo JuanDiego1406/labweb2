@@ -38,8 +38,7 @@ sudo nano /etc/apache2/sites-available/discovery.sistema.sol.conf
 
 Contenido:
 
-<VirtualHost *:80>
-
+    <VirtualHost *:80>
     ServerName discovery.sistema.sol
     ServerAdmin webmaster@apolo.sistema.sol
 
@@ -97,7 +96,7 @@ Contenido:
         Options Indexes FollowSymLinks
         AllowOverride None
     </Directory>
-</VirtualHost>
+    </VirtualHost>
 
 
 Activa el sitio y reinicia Apache:
@@ -155,8 +154,7 @@ Crea el certificado y la clave:
 
 crearemos el documento discovery.ssl.conf:
 
-<VirtualHost *:443>
-
+    <VirtualHost *:443>
     ServerName discovery.sistema.sol
     ServerAdmin webmaster@apolo.sistema.sol
 
@@ -218,7 +216,7 @@ crearemos el documento discovery.ssl.conf:
         Options Indexes FollowSymLinks
         AllowOverride None
     </Directory>
-</VirtualHost>
+    </VirtualHost>
 
 y luego copiaremos el certificado y la clave en nuestro equipo 
 
